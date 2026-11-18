@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /properties/new
+Disallow: /properties/edit/
+Disallow: /reset-password/
+
+Sitemap: https://sapphireiq.in/sitemap.xml
