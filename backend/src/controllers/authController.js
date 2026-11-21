@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import User from '../models/User.js';
+import Property from '../models/Property.js';
 import { sendEmail } from '../services/emailService.js';
 import { mockStore } from '../utils/mockStore.js';
 
@@ -10,7 +11,7 @@ import { mockStore } from '../utils/mockStore.js';
 const sendTokenResponse = (user, statusCode, res) => {
   const token = jwt.sign(
     { id: user._id || user.id, role: user.role },
-    process.env.JWT_SECRET || 'sapphireiq_jwt_secret_dev_key_secure_983742',
+    process.env.JWT_SECRET || 'buyyourproperty_jwt_secret_dev_key_secure_983742',
     {
       expiresIn: process.env.JWT_EXPIRE || '30d',
     }
@@ -26,6 +27,7 @@ const sendTokenResponse = (user, statusCode, res) => {
       role: user.role,
       phone: user.phone,
       avatar: user.avatar,
+      favorites: user.favorites || [],
     },
   });
 };
@@ -37,7 +39,6 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password, phone, role } = req.body;
 
-    // Fallback store if MongoDB Atlas is not connected yet
     if (mongoose.connection.readyState !== 1) {
       const existing = mockStore.findUserByEmail(email);
       if (existing) {
@@ -50,7 +51,6 @@ export const register = async (req, res, next) => {
       return sendTokenResponse(newUser, 201, res);
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -59,7 +59,6 @@ export const register = async (req, res, next) => {
       });
     }
 
-    // Create user
     const user = await User.create({
       name,
       email,
@@ -88,7 +87,6 @@ export const login = async (req, res, next) => {
       });
     }
 
-    // Fallback store if MongoDB Atlas is not connected yet
     if (mongoose.connection.readyState !== 1) {
       const user = mockStore.findUserByEmail(email);
       if (!user) {
@@ -107,7 +105,6 @@ export const login = async (req, res, next) => {
       return sendTokenResponse(user, 200, res);
     }
 
-    // Check for user
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({
@@ -116,7 +113,6 @@ export const login = async (req, res, next) => {
       });
     }
 
-    // Check password
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({
@@ -150,6 +146,7 @@ export const getMe = async (req, res, next) => {
           role: user.role,
           phone: user.phone,
           avatar: user.avatar,
+          favorites: user.favorites || [],
           createdAt: user.createdAt,
         },
       });
@@ -165,6 +162,7 @@ export const getMe = async (req, res, next) => {
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,
+        favorites: user.favorites || [],
         createdAt: user.createdAt,
       },
     });
@@ -184,7 +182,6 @@ export const updateProfile = async (req, res, next) => {
       avatar: req.body.avatar,
     };
 
-    // Remove undefined values
     Object.keys(fieldsToUpdate).forEach(
       (key) => fieldsToUpdate[key] === undefined && delete fieldsToUpdate[key]
     );
@@ -200,6 +197,7 @@ export const updateProfile = async (req, res, next) => {
           role: updated.role,
           phone: updated.phone,
           avatar: updated.avatar,
+          favorites: updated.favorites || [],
         },
       });
     }
@@ -218,7 +216,76 @@ export const updateProfile = async (req, res, next) => {
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,
+        favorites: user.favorites || [],
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Toggle favorite property
+// @route   POST /api/users/favorites/:propertyId
+// @access  Private
+export const toggleFavorite = async (req, res, next) => {
+  try {
+    const { propertyId } = req.params;
+
+    if (mongoose.connection.readyState !== 1) {
+      const result = mockStore.toggleFavorite(req.user.id || req.user._id, propertyId);
+      return res.status(200).json({
+        success: true,
+        isFavorited: result.isFavorited,
+        favorites: result.favorites,
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const index = user.favorites.indexOf(propertyId);
+    let isFavorited = false;
+    if (index === -1) {
+      user.favorites.push(propertyId);
+      isFavorited = true;
+    } else {
+      user.favorites.splice(index, 1);
+      isFavorited = false;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      isFavorited,
+      favorites: user.favorites,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get user's favorite properties
+// @route   GET /api/users/favorites
+// @access  Private
+export const getFavorites = async (req, res, next) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      const favProperties = mockStore.getUserFavorites(req.user.id || req.user._id);
+      return res.status(200).json({ success: true, count: favProperties.length, data: favProperties });
+    }
+
+    const user = await User.findById(req.user.id).populate({
+      path: 'favorites',
+      populate: { path: 'owner', select: 'name email phone avatar' },
+    });
+
+    res.status(200).json({
+      success: true,
+      count: user.favorites.length,
+      data: user.favorites,
     });
   } catch (error) {
     next(error);
@@ -266,33 +333,31 @@ export const forgotPassword = async (req, res, next) => {
       });
     }
 
-    // Get reset token
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
 
-    // Create reset URL
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
     const resetUrl = `${clientUrl}/reset-password/${resetToken}`;
 
-    const message = `You are receiving this email because you (or someone else) has requested a password reset for your SapphireIQ account.\n\nPlease navigate to the following link to reset your password:\n\n${resetUrl}\n\nIf you did not request this, please ignore this email. This link is valid for 15 minutes.`;
+    const message = `You are receiving this email because you requested a password reset for your BuyYourProperty account.\n\nPlease reset your password at: ${resetUrl}\n\nValid for 15 minutes.`;
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0ecff; border-radius: 8px;">
-        <h2 style="color: #0f296b;">SapphireIQ Real Estate</h2>
+        <h2 style="color: #0f296b;">BuyYourProperty Luxury Estates</h2>
         <p>Hello ${user.name},</p>
-        <p>We received a request to reset your password for your SapphireIQ account.</p>
+        <p>We received a request to reset your password for your BuyYourProperty account.</p>
         <div style="text-align: center; margin: 30px 0;">
           <a href="${resetUrl}" style="background-color: #1b49d4; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Reset Password</a>
         </div>
         <p style="color: #64748b; font-size: 14px;">Or copy and paste this link in your browser:<br/><a href="${resetUrl}">${resetUrl}</a></p>
-        <p style="color: #94a3b8; font-size: 12px; margin-top: 30px;">This link will expire in 15 minutes. If you did not request a password reset, please ignore this email.</p>
+        <p style="color: #94a3b8; font-size: 12px; margin-top: 30px;">This link will expire in 15 minutes.</p>
       </div>
     `;
 
     try {
       await sendEmail({
         email: user.email,
-        subject: 'SapphireIQ - Password Reset Request',
+        subject: 'BuyYourProperty - Password Reset Request',
         message,
         html,
       });
@@ -346,7 +411,6 @@ export const resetPassword = async (req, res, next) => {
       return sendTokenResponse(user, 200, res);
     }
 
-    // Hash token from url
     const resetPasswordToken = crypto
       .createHash('sha256')
       .update(token)
@@ -364,7 +428,6 @@ export const resetPassword = async (req, res, next) => {
       });
     }
 
-    // Set new password
     user.password = password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;

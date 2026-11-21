@@ -41,6 +41,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
     },
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Property',
+      },
+    ],
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

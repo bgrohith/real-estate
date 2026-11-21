@@ -38,7 +38,7 @@ export const RegisterPage: React.FC = () => {
             <Building2 className="w-6 h-6" />
           </div>
           <h2 className="text-2xl font-serif font-bold text-slate-900 tracking-tight">
-            Join SapphireIQ
+            Join BuyYourProperty
           </h2>
           <p className="text-xs text-slate-500">
             Create an exclusive account to list properties and book private viewings

@@ -1,7 +1,7 @@
 {
-  "name": "sapphireiq-backend",
+  "name": "buyyourproperty-backend",
   "version": "1.0.0",
-  "description": "SapphireIQ Real Estate Platform Backend REST API",
+  "description": "BuyYourProperty Real Estate Platform Backend REST API",
   "main": "src/server.js",
   "type": "module",
   "scripts": {

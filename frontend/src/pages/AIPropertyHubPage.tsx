@@ -21,7 +21,7 @@ import { AIPropertyListing } from '../types';
 export const AIPropertyHubPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [firecrawlKey, setFirecrawlKey] = useState(
-    localStorage.getItem('sapphireiq_firecrawl_key') || ''
+    localStorage.getItem('buyyourproperty_firecrawl_key') || localStorage.getItem('sapphireiq_firecrawl_key') || ''
   );
   const [showKeySettings, setShowKeySettings] = useState(false);
   const [keySavedMessage, setKeySavedMessage] = useState(false);
@@ -40,7 +40,7 @@ export const AIPropertyHubPage: React.FC = () => {
 
   const handleSaveKey = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('sapphireiq_firecrawl_key', firecrawlKey.trim());
+    localStorage.setItem('buyyourproperty_firecrawl_key', firecrawlKey.trim());
     setKeySavedMessage(true);
     setTimeout(() => setKeySavedMessage(false), 3000);
   };
@@ -90,7 +90,7 @@ export const AIPropertyHubPage: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight">
-            SapphireIQ AI Property Hub
+            BuyYourProperty AI Property Hub
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
@@ -129,7 +129,7 @@ export const AIPropertyHubPage: React.FC = () => {
           </div>
 
           <p className="text-xs text-slate-500 leading-relaxed">
-            SapphireIQ supports BYOK for Firecrawl. Enter your personal Firecrawl API key below to unlock live web-crawled listings across Indian portals. If left blank, the platform automatically utilizes our curated luxury property matching index.
+            BuyYourProperty supports BYOK for Firecrawl. Enter your personal Firecrawl API key below to unlock live web-crawled listings across Indian portals. If left blank, the platform automatically utilizes our curated luxury property matching index.
           </p>
 
           <form onSubmit={handleSaveKey} className="flex flex-col sm:flex-row gap-3">

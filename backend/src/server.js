@@ -44,7 +44,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, postman)
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
         return callback(null, true);
@@ -58,7 +57,7 @@ app.use(
 // Security: Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Limit each IP to 300 requests per 15 minutes
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -80,8 +79,9 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    service: 'SapphireIQ Real Estate API',
-    version: '1.0.0',
+    service: 'BuyYourProperty Real Estate API',
+    platform: 'BuyYourProperty Platform',
+    version: '2.0.0',
   });
 });
 
@@ -94,7 +94,7 @@ app.use('/api/ai-hub', aiHubRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('SapphireIQ Real Estate API is running in ' + (process.env.NODE_ENV || 'development') + ' mode.');
+  res.send('BuyYourProperty Platform API is running in ' + (process.env.NODE_ENV || 'development') + ' mode.');
 });
 
 // Centralized Error Handling Middleware
@@ -103,10 +103,9 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
-  console.log(`[SapphireIQ API Server] Running on http://localhost:${PORT}`);
+  console.log(`[BuyYourProperty API Server] Running on http://localhost:${PORT}`);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error(`[Unhandled Error] ${err.message}`);
 });

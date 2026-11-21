@@ -115,6 +115,32 @@ const propertySchema = new mongoose.Schema(
       enum: ['Available', 'Under Offer', 'Sold'],
       default: 'Available',
     },
+    reraId: {
+      type: String,
+      default: 'PRM/KA/RERA/1251/310/PR/170915/000234',
+      trim: true,
+    },
+    virtualTour: [
+      {
+        sceneName: { type: String, default: 'Grand Living Hall' },
+        panoramaUrl: { type: String, required: true },
+        roomType: { type: String, default: 'Living Room' },
+      },
+    ],
+    investmentYield: {
+      type: Number,
+      default: 5.4, // Estimated gross rental yield %
+    },
+    appreciationRate: {
+      type: Number,
+      default: 11.8, // 5-year annualized capital appreciation %
+    },
+    lifestyleScores: {
+      connectivity: { type: Number, default: 94 },
+      luxury: { type: Number, default: 98 },
+      greenArea: { type: Number, default: 86 },
+      safety: { type: Number, default: 96 },
+    },
     featured: {
       type: Boolean,
       default: false,

@@ -40,6 +40,7 @@ export const CreateEditPropertyPage: React.FC = () => {
   const [state, setState] = useState('Maharashtra');
   const [pincode, setPincode] = useState('');
   const [landmark, setLandmark] = useState('');
+  const [reraId, setReraId] = useState('');
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([
     '24/7 Security',
     'Power Backup',
@@ -80,6 +81,7 @@ export const CreateEditPropertyPage: React.FC = () => {
             setState(p.location.state || '');
             setPincode(p.location.pincode || '');
             setLandmark(p.location.landmark || '');
+            setReraId(p.reraId || '');
             setSelectedAmenities(p.amenities || []);
             setExistingImages(p.images || []);
           }
@@ -159,6 +161,9 @@ export const CreateEditPropertyPage: React.FC = () => {
       formData.append('state', state);
       formData.append('pincode', pincode);
       formData.append('landmark', landmark);
+      if (reraId) {
+        formData.append('reraId', reraId);
+      }
       formData.append('amenities', JSON.stringify(selectedAmenities));
 
       // Append up to 4 images
@@ -212,7 +217,7 @@ export const CreateEditPropertyPage: React.FC = () => {
             {isEditing ? 'Edit Property Listing' : 'Post Exclusive Property'}
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Fill in the details below to publish your listing on SapphireIQ's verified network.
+            Fill in the details below to publish your listing on BuyYourProperty's verified network.
           </p>
         </div>
       </div>
@@ -242,6 +247,19 @@ export const CreateEditPropertyPage: React.FC = () => {
               placeholder="e.g. Lodha World One - 4 BHK Sea View Luxury Sky Residence"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              className="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sapphire-600 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-slate-700 mb-1">
+              RERA Registration Number (Optional)
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. P51900001345 (MahaRERA / PRM/KA/RERA/...)"
+              value={reraId}
+              onChange={(e) => setReraId(e.target.value)}
               className="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sapphire-600 focus:outline-none"
             />
           </div>

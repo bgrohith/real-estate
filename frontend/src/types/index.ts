@@ -5,6 +5,7 @@ export interface User {
   role: 'user' | 'agent' | 'admin';
   phone?: string;
   avatar?: string;
+  favorites?: string[];
   createdAt?: string;
 }
 
@@ -22,6 +23,20 @@ export interface PropertyLocation {
   landmark?: string;
 }
 
+export interface VirtualTourScene {
+  sceneName: string;
+  panoramaUrl: string;
+  roomType: string;
+}
+
+export interface LifestyleScores {
+  connectivity: number;
+  luxury: number;
+  greenArea?: number;
+  greenery?: number;
+  safety: number;
+}
+
 export interface Property {
   _id: string;
   title: string;
@@ -33,6 +48,11 @@ export interface Property {
   bathrooms: number;
   furnishing: 'Furnished' | 'Semi-Furnished' | 'Unfurnished';
   possession: 'Ready to Move' | 'Under Construction' | 'New Launch';
+  reraId?: string;
+  virtualTour?: VirtualTourScene[];
+  investmentYield?: number;
+  appreciationRate?: number;
+  lifestyleScores?: LifestyleScores;
   location: PropertyLocation;
   images: PropertyImage[];
   amenities: string[];
@@ -75,7 +95,9 @@ export interface PropertyFilters {
   furnishing?: string;
   possession?: string;
   featured?: boolean;
-  sortBy?: 'newest' | 'price_asc' | 'price_desc' | 'area_desc' | 'views';
+  hasVirtualTour?: boolean;
+  reraVerified?: boolean;
+  sortBy?: 'newest' | 'price_asc' | 'price_desc' | 'area_desc' | 'views' | 'roi';
   page?: number;
   limit?: number;
 }

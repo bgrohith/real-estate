@@ -39,7 +39,7 @@ export const uploadToImageKit = async (buffer, originalname) => {
       const response = await imagekit.upload({
         file: buffer.toString('base64'),
         fileName: `${Date.now()}-${originalname.replace(/\s+/g, '_')}`,
-        folder: '/sapphireiq/properties',
+        folder: '/buyyourproperty/properties',
         useUniqueFileName: true,
       });
 
@@ -50,7 +50,6 @@ export const uploadToImageKit = async (buffer, originalname) => {
       };
     } catch (error) {
       console.error('[ImageKit Upload Error]', error);
-      // Fallback to local storage if ImageKit API fails
     }
   }
 
@@ -61,7 +60,7 @@ export const uploadToImageKit = async (buffer, originalname) => {
   }
 
   const ext = path.extname(originalname) || '.jpg';
-  const uniqueName = `prop_${Date.now()}_${crypto.randomBytes(4).toString('hex')}${ext}`;
+  const uniqueName = `byp_${Date.now()}_${crypto.randomBytes(4).toString('hex')}${ext}`;
   const filePath = path.join(uploadsDir, uniqueName);
 
   fs.writeFileSync(filePath, buffer);

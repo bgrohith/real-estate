@@ -24,7 +24,7 @@ export const sendEmail = async (options) => {
       });
 
       const message = {
-        from: `"${process.env.FROM_NAME || 'SapphireIQ Real Estate'}" <${process.env.FROM_EMAIL || 'support@sapphireiq.in'}>`,
+        from: `"${process.env.FROM_NAME || 'BuyYourProperty Luxury Estates'}" <${process.env.FROM_EMAIL || 'support@buyyourproperty.in'}>`,
         to: options.email,
         subject: options.subject,
         text: options.message,

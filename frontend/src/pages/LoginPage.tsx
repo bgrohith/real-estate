@@ -43,7 +43,7 @@ export const LoginPage: React.FC = () => {
             <Building2 className="w-6 h-6" />
           </div>
           <h2 className="text-2xl font-serif font-bold text-slate-900 tracking-tight">
-            Sign In to SapphireIQ
+            Sign In to BuyYourProperty
           </h2>
           <p className="text-xs text-slate-500">
             Access your property dashboard, listings, and viewing itineraries
@@ -58,7 +58,7 @@ export const LoginPage: React.FC = () => {
           <div className="grid grid-cols-2 gap-2 text-xs">
             <button
               type="button"
-              onClick={() => fillDemoAccount('rohit.sharma@sapphireiq.in')}
+              onClick={() => fillDemoAccount('rohit.sharma@buyyourproperty.in')}
               className="py-1.5 px-2 bg-white border border-slate-200 rounded-lg hover:border-sapphire-500 text-slate-700 text-left font-medium transition-all"
             >
               <span className="font-bold text-sapphire-800 block text-[10px]">Real Estate Agent</span>
@@ -66,7 +66,7 @@ export const LoginPage: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => fillDemoAccount('ananya.deshmukh@sapphireiq.in')}
+              onClick={() => fillDemoAccount('ananya.deshmukh@buyyourproperty.in')}
               className="py-1.5 px-2 bg-white border border-slate-200 rounded-lg hover:border-sapphire-500 text-slate-700 text-left font-medium transition-all"
             >
               <span className="font-bold text-sapphire-800 block text-[10px]">Home Buyer</span>

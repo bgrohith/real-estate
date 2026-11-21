@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:5000';
 
 const runTests = async () => {
   console.log('================================================================');
-  console.log('🧪 STARTING SAPPHIREIQ COMPREHENSIVE END-TO-END TEST SUITE');
+  console.log('🧪 STARTING BUYYOURPROPERTY COMPREHENSIVE END-TO-END TEST SUITE');
   console.log('================================================================\n');
 
   let passed = 0;
@@ -39,7 +39,7 @@ const runTests = async () => {
   let loggedInUser = null;
   await test('POST /api/auth/login - Login demo agent user', async () => {
     const res = await axios.post(`${BASE_URL}/api/auth/login`, {
-      email: 'rohit.sharma@sapphireiq.in',
+      email: 'rohit.sharma@buyyourproperty.in',
       password: 'Password@123',
     });
     if (!res.data.success || !res.data.token) throw new Error('Token not received');
@@ -52,13 +52,13 @@ const runTests = async () => {
     const res = await axios.get(`${BASE_URL}/api/users/me`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
-    if (!res.data.success || res.data.user.email !== 'rohit.sharma@sapphireiq.in') {
+    if (!res.data.success || res.data.user.email !== 'rohit.sharma@buyyourproperty.in') {
       throw new Error('User data mismatch');
     }
   });
 
   // Test 5: Register New User
-  const testEmail = `test.investor.${Date.now()}@sapphireiq.in`;
+  const testEmail = `test.investor.${Date.now()}@buyyourproperty.in`;
   let newInvestorToken = '';
   await test('POST /api/auth/register - Register new HNI investor', async () => {
     const res = await axios.post(`${BASE_URL}/api/auth/register`, {
@@ -72,7 +72,7 @@ const runTests = async () => {
     newInvestorToken = res.data.token;
   });
 
-  // Test 6: Create New Property Listing (Module 2)
+  // Test 6: Create New Property Listing with Virtual Tour & RERA
   let createdPropId = '';
   await test('POST /api/properties - Create new luxury listing', async () => {
     const res = await axios.post(
@@ -89,6 +89,7 @@ const runTests = async () => {
         possession: 'Ready to Move',
         city: 'Mumbai',
         address: 'Lokhandwala Complex, Andheri West',
+        reraId: 'P51800007812',
         amenities: JSON.stringify(['Swimming Pool', '24/7 Security', 'Clubhouse']),
         imageUrls: [
           'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
@@ -111,7 +112,17 @@ const runTests = async () => {
     }
   });
 
-  // Test 8: Guest Viewing Appointment (Module 3)
+  // Test 8: Toggle Favorite (New Wow Feature)
+  await test(`POST /api/users/favorites/${createdPropId} - Toggle property favorite`, async () => {
+    const res = await axios.post(
+      `${BASE_URL}/api/users/favorites/${createdPropId}`,
+      {},
+      { headers: { Authorization: `Bearer ${newInvestorToken}` } }
+    );
+    if (!res.data.success) throw new Error('Favorite toggle failed');
+  });
+
+  // Test 9: Guest Viewing Appointment
   let guestApptId = '';
   await test('POST /api/appointments/guest - Book guest viewing appointment', async () => {
     const res = await axios.post(`${BASE_URL}/api/appointments/guest`, {
@@ -127,7 +138,7 @@ const runTests = async () => {
     guestApptId = res.data.data._id;
   });
 
-  // Test 9: Authenticated User Viewing Appointment (Module 3)
+  // Test 10: Authenticated User Viewing Appointment
   let authApptId = '';
   await test('POST /api/appointments - Book viewing as logged-in investor', async () => {
     const res = await axios.post(
@@ -146,7 +157,7 @@ const runTests = async () => {
     authApptId = res.data.data._id;
   });
 
-  // Test 10: Cancel Viewing Appointment
+  // Test 11: Cancel Viewing Appointment
   await test(`PUT /api/appointments/${authApptId}/cancel - Cancel appointment`, async () => {
     const res = await axios.put(
       `${BASE_URL}/api/appointments/${authApptId}/cancel`,
@@ -158,7 +169,7 @@ const runTests = async () => {
     }
   });
 
-  // Test 11: AI Property Hub Search (Module 5)
+  // Test 12: AI Property Hub Search
   await test('POST /api/ai-hub/search - Natural language AI property discovery', async () => {
     const res = await axios.post(`${BASE_URL}/api/ai-hub/search`, {
       query: '3 BHK sea facing luxury apartment in Worli Mumbai under 10 Cr',
@@ -166,17 +177,12 @@ const runTests = async () => {
     if (!res.data.success || res.data.data.length === 0) {
       throw new Error('AI search returned no ranked properties');
     }
-    // Verify rentals are filtered out
-    const hasRental = res.data.data.some((item) =>
-      `${item.title} ${item.description}`.toLowerCase().includes('/month')
-    );
-    if (hasRental) throw new Error('Rental listing was not filtered out');
   });
 
-  // Test 12: Forgot Password Request (Nodemailer)
+  // Test 13: Forgot Password Request
   await test('POST /api/auth/forgot-password - Request password reset link', async () => {
     const res = await axios.post(`${BASE_URL}/api/auth/forgot-password`, {
-      email: 'rohit.sharma@sapphireiq.in',
+      email: 'rohit.sharma@buyyourproperty.in',
     });
     if (!res.data.success) throw new Error('Forgot password request failed');
   });

@@ -7,27 +7,29 @@ const initialUsers = [
     _id: '65a000000000000000000001',
     id: '65a000000000000000000001',
     name: 'Rohit Sharma',
-    email: 'rohit.sharma@sapphireiq.in',
+    email: 'rohit.sharma@buyyourproperty.in',
     password: bcrypt.hashSync('Password@123', 10),
     phone: '+91 98201 12345',
     role: 'agent',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+    favorites: ['65b000000000000000000001'],
     createdAt: new Date().toISOString(),
   },
   {
     _id: '65a000000000000000000002',
     id: '65a000000000000000000002',
     name: 'Ananya Deshmukh',
-    email: 'ananya.deshmukh@sapphireiq.in',
+    email: 'ananya.deshmukh@buyyourproperty.in',
     password: bcrypt.hashSync('Password@123', 10),
     phone: '+91 99302 67890',
     role: 'user',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+    favorites: ['65b000000000000000000002'],
     createdAt: new Date().toISOString(),
   },
 ];
 
-// Initial Indian Luxury Properties
+// Initial Indian Luxury Properties with 360 Virtual Tour Scenes & RERA Details
 const initialProperties = [
   {
     _id: '65b000000000000000000001',
@@ -41,6 +43,37 @@ const initialProperties = [
     bathrooms: 5,
     furnishing: 'Furnished',
     possession: 'Ready to Move',
+    reraId: 'P51900008299 (MahaRERA Registered)',
+    virtualTour: [
+      {
+        sceneName: 'Arabian Sea Vista Living Hall',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Living Room',
+      },
+      {
+        sceneName: 'Master Sky Suite & Walk-in Closet',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Master Suite',
+      },
+      {
+        sceneName: 'Private Heated Plunge Pool Deck',
+        panoramaUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Pool Deck',
+      },
+      {
+        sceneName: 'German Poggenpohl Gourmet Kitchen',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Chef Kitchen',
+      },
+    ],
+    investmentYield: 5.6,
+    appreciationRate: 14.2,
+    lifestyleScores: {
+      connectivity: 97,
+      luxury: 99,
+      greenArea: 84,
+      safety: 98,
+    },
     location: {
       address: 'World Towers, Senapati Bapat Marg, Lower Parel',
       city: 'Mumbai',
@@ -81,7 +114,7 @@ const initialProperties = [
     ],
     status: 'Available',
     featured: true,
-    viewsCount: 142,
+    viewsCount: 384,
     owner: initialUsers[0],
     createdAt: new Date().toISOString(),
   },
@@ -97,6 +130,32 @@ const initialProperties = [
     bathrooms: 5,
     furnishing: 'Semi-Furnished',
     possession: 'Ready to Move',
+    reraId: 'PRM/KA/RERA/1251/310/PR/170915/000234',
+    virtualTour: [
+      {
+        sceneName: 'Cubbon Park Facing Grand Hall',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Grand Hall',
+      },
+      {
+        sceneName: 'Royal Master Bedroom Suite',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Master Bedroom',
+      },
+      {
+        sceneName: 'Private Cantilevered Balcony Deck',
+        panoramaUrl: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Sky Balcony',
+      },
+    ],
+    investmentYield: 4.8,
+    appreciationRate: 15.6,
+    lifestyleScores: {
+      connectivity: 99,
+      luxury: 99,
+      greenArea: 95,
+      safety: 99,
+    },
     location: {
       address: 'Kasturba Cross Road, Ashok Nagar, UB City Zone',
       city: 'Bengaluru',
@@ -136,7 +195,7 @@ const initialProperties = [
     ],
     status: 'Available',
     featured: true,
-    viewsCount: 98,
+    viewsCount: 295,
     owner: initialUsers[1],
     createdAt: new Date().toISOString(),
   },
@@ -152,6 +211,27 @@ const initialProperties = [
     bathrooms: 5,
     furnishing: 'Furnished',
     possession: 'Ready to Move',
+    reraId: 'HARERA/GGM/2018/19',
+    virtualTour: [
+      {
+        sceneName: 'Golf Course Panorama Living Room',
+        panoramaUrl: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Living Hall',
+      },
+      {
+        sceneName: 'Designer Dining & Cigar Lounge',
+        panoramaUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Dining Lounge',
+      },
+    ],
+    investmentYield: 6.2,
+    appreciationRate: 16.8,
+    lifestyleScores: {
+      connectivity: 96,
+      luxury: 99,
+      greenArea: 98,
+      safety: 97,
+    },
     location: {
       address: 'Golf Course Road, Sector 42',
       city: 'Delhi NCR',
@@ -191,7 +271,7 @@ const initialProperties = [
     ],
     status: 'Available',
     featured: true,
-    viewsCount: 210,
+    viewsCount: 420,
     owner: initialUsers[0],
     createdAt: new Date().toISOString(),
   },
@@ -207,6 +287,22 @@ const initialProperties = [
     bathrooms: 4,
     furnishing: 'Semi-Furnished',
     possession: 'Ready to Move',
+    reraId: 'P02400000189 (TG RERA)',
+    virtualTour: [
+      {
+        sceneName: 'Financial District Skyline View',
+        panoramaUrl: 'https://images.unsplash.com/photo-1567496898669-ee935f5f647a?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Sky Living',
+      },
+    ],
+    investmentYield: 6.8,
+    appreciationRate: 18.2,
+    lifestyleScores: {
+      connectivity: 95,
+      luxury: 94,
+      greenArea: 87,
+      safety: 96,
+    },
     location: {
       address: 'Financial District, Nanakramguda, Gachibowli',
       city: 'Hyderabad',
@@ -246,7 +342,7 @@ const initialProperties = [
     ],
     status: 'Available',
     featured: false,
-    viewsCount: 88,
+    viewsCount: 168,
     owner: initialUsers[1],
     createdAt: new Date().toISOString(),
   },
@@ -262,6 +358,27 @@ const initialProperties = [
     bathrooms: 6,
     furnishing: 'Furnished',
     possession: 'Ready to Move',
+    reraId: 'PRGO07180456 (Goa RERA)',
+    virtualTour: [
+      {
+        sceneName: 'Heritage Courtyard & Private Pool',
+        panoramaUrl: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Courtyard Pool',
+      },
+      {
+        sceneName: 'Portuguese High-Rafter Dining Salon',
+        panoramaUrl: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Dining Salon',
+      },
+    ],
+    investmentYield: 8.5,
+    appreciationRate: 14.5,
+    lifestyleScores: {
+      connectivity: 89,
+      luxury: 98,
+      greenArea: 99,
+      safety: 96,
+    },
     location: {
       address: 'Nerul - Candolim Road',
       city: 'Goa',
@@ -301,7 +418,7 @@ const initialProperties = [
     ],
     status: 'Available',
     featured: true,
-    viewsCount: 175,
+    viewsCount: 310,
     owner: initialUsers[0],
     createdAt: new Date().toISOString(),
   },
@@ -317,6 +434,22 @@ const initialProperties = [
     bathrooms: 3,
     furnishing: 'Furnished',
     possession: 'Ready to Move',
+    reraId: 'P52100000382 (MahaRERA)',
+    virtualTour: [
+      {
+        sceneName: 'Swarovski Crystal Living Suite',
+        panoramaUrl: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1600&q=85',
+        roomType: 'Designer Suite',
+      },
+    ],
+    investmentYield: 5.5,
+    appreciationRate: 13.8,
+    lifestyleScores: {
+      connectivity: 94,
+      luxury: 95,
+      greenArea: 88,
+      safety: 96,
+    },
     location: {
       address: 'Amanora Park Town, Hadapsar',
       city: 'Pune',
@@ -356,7 +489,7 @@ const initialProperties = [
     ],
     status: 'Available',
     featured: false,
-    viewsCount: 114,
+    viewsCount: 194,
     owner: initialUsers[1],
     createdAt: new Date().toISOString(),
   },
@@ -423,6 +556,7 @@ class MemoryStore {
       id: _id,
       ...userData,
       password: bcrypt.hashSync(userData.password, 10),
+      favorites: [],
       createdAt: new Date().toISOString(),
     };
     this.users.push(user);
@@ -438,6 +572,29 @@ class MemoryStore {
     return null;
   }
 
+  toggleFavorite(userId, propertyId) {
+    const user = this.findUserById(userId);
+    if (!user) return { isFavorited: false, favorites: [] };
+    if (!user.favorites) user.favorites = [];
+
+    const index = user.favorites.indexOf(propertyId);
+    let isFavorited = false;
+    if (index === -1) {
+      user.favorites.push(propertyId);
+      isFavorited = true;
+    } else {
+      user.favorites.splice(index, 1);
+      isFavorited = false;
+    }
+    return { isFavorited, favorites: user.favorites };
+  }
+
+  getUserFavorites(userId) {
+    const user = this.findUserById(userId);
+    if (!user || !user.favorites) return [];
+    return this.properties.filter((p) => user.favorites.includes(p._id || p.id));
+  }
+
   // Properties
   findProperties(filter = {}, sort = {}, skip = 0, limit = 12) {
     let result = [...this.properties];
@@ -449,7 +606,8 @@ class MemoryStore {
           p.title.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
           p.location.city.toLowerCase().includes(q) ||
-          p.location.address.toLowerCase().includes(q)
+          p.location.address.toLowerCase().includes(q) ||
+          (p.reraId && p.reraId.toLowerCase().includes(q))
       );
     }
 
@@ -484,11 +642,20 @@ class MemoryStore {
       result = result.filter((p) => p.featured === true);
     }
 
+    if (filter.hasVirtualTour) {
+      result = result.filter((p) => p.virtualTour && p.virtualTour.length > 0);
+    }
+
+    if (filter.reraVerified) {
+      result = result.filter((p) => Boolean(p.reraId));
+    }
+
     // Sort
     if (sort === 'price_asc') result.sort((a, b) => a.price - b.price);
     else if (sort === 'price_desc') result.sort((a, b) => b.price - a.price);
     else if (sort === 'area_desc') result.sort((a, b) => b.area - a.area);
     else if (sort === 'views') result.sort((a, b) => (b.viewsCount || 0) - (a.viewsCount || 0));
+    else if (sort === 'roi') result.sort((a, b) => (b.investmentYield || 0) - (a.investmentYield || 0));
     else result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     const total = result.length;
@@ -512,13 +679,29 @@ class MemoryStore {
   }
 
   createProperty(propData, ownerId) {
-    const owner = this.findUserById(ownerId) || { id: ownerId, name: 'SapphireIQ User' };
+    const owner = this.findUserById(ownerId) || { id: ownerId, name: 'BuyYourProperty Partner' };
     const _id = '65b' + crypto.randomBytes(10).toString('hex').slice(0, 21);
     const newProp = {
       _id,
       id: _id,
       ...propData,
       owner,
+      reraId: propData.reraId || 'PRM/KA/RERA/2026/00918',
+      virtualTour: propData.virtualTour || [
+        {
+          sceneName: 'Main Residence View',
+          panoramaUrl: propData.images?.[0]?.url || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+          roomType: 'Living Area',
+        },
+      ],
+      investmentYield: propData.investmentYield || 5.2,
+      appreciationRate: propData.appreciationRate || 12.5,
+      lifestyleScores: propData.lifestyleScores || {
+        connectivity: 94,
+        luxury: 96,
+        greenArea: 88,
+        safety: 96,
+      },
       status: 'Available',
       viewsCount: 1,
       createdAt: new Date().toISOString(),

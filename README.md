@@ -1,14 +1,52 @@
-# SapphireIQ – Full-Stack Luxury Real Estate Platform
+# BuyYourProperty – Full-Stack Indian Real Estate Platform
 
-**SapphireIQ** is a modern, responsive, full-stack real estate marketplace and advisory platform tailored specifically for the Indian real estate market. The platform connects high-net-worth buyers, investors, property owners, and real estate consultants with verified listings, multi-criteria filtering, 4-image uploads via ImageKit, private viewing booking workflows, and an optional Firecrawl-powered AI Property Hub.
+**BuyYourProperty** is a cutting-edge, responsive, full-stack real estate marketplace and investment advisory platform tailored specifically for the Indian real estate market. The platform connects high-net-worth buyers, investors, property owners, and real estate consultants with verified listings, multi-criteria filtering, 4-image uploads via ImageKit, private viewing booking workflows, interactive 360° VR tours, state-wise stamp duty calculators, AI valuation forecasting, and an optional Firecrawl-powered AI Property Hub.
 
 ---
 
-## 🌟 Technology Stack
+## 🌟 Wow-Factor & Exclusive Innovations
+
+1. **Interactive 360° / 3D Virtual Tour Viewer Simulator**:
+   - Pan and rotate 360° panoramas with mouse or touch gestures.
+   - Switch between rooms: Grand Living Salon, Master Bedroom Suite, Terrace & Infinity Pool, Gourmet Chef Kitchen.
+   - Interactive hotspot pins revealing architectural details, premium Italian marble, and German fixtures.
+
+2. **Indian Home Loan EMI, Stamp Duty & Tax Calculator**:
+   - Dynamic sliders for Loan Amount, Down Payment (up to 80%), Interest Rate, and Tenure (up to 30 years).
+   - State-wise Indian Stamp Duty and Registration Fee estimator (Maharashtra 6%, Karnataka 5%, Delhi 6%, Haryana 7%, Telangana 7.5%, etc.).
+   - Multi-bank interest rate benchmarks (State Bank of India, HDFC Bank, ICICI Bank, Kotak Mahindra).
+   - Tax savings summary under Section 80C (Principal) and Section 24(b) (Interest).
+
+3. **AI Property Valuation & 5-Year ROI Predictor**:
+   - Instant algorithmic valuation estimate based on micro-market price/sqft indices.
+   - 5-Year capital appreciation projection graph with compound annual growth rates (CAGR).
+   - Gross rental yield benchmarking across Indian metropolitan hubs.
+
+4. **Side-by-Side Property Comparison Matrix & Floating Dock**:
+   - Compare up to 3 luxury residences side-by-side.
+   - Evaluate price, carpet area, configuration, possession status, RERA number, amenities, and lifestyle scores in a high-density comparison matrix.
+   - Floating persistent comparison dock at the bottom of the screen.
+
+5. **Multi-Currency & Area Unit Converter**:
+   - Seamless currency switcher in Navbar across **INR (₹ Cr / Lakhs)**, **USD ($)**, **AED (د.إ)**, and **GBP (£)**.
+   - Area unit toggle between **sq ft**, **sq m**, and **acres**.
+
+6. **Shortlisting & Favorites with Celebratory Confetti**:
+   - Save preferred properties to your personal shortlist.
+   - Integrated `canvas-confetti` celebration burst whenever saving or booking viewings.
+   - Shortlisted homes sync with MongoDB and localStorage.
+
+7. **RERA Verification & Compliance Badges**:
+   - Clear RERA registration ID badges (MahaRERA, KA RERA, HRERA, etc.).
+   - Verified legal compliance and escrow account verification badges.
+
+---
+
+## 🛠️ Technology Stack
 
 | Layer | Technology |
 | :--- | :--- |
-| **Frontend** | React.js, TypeScript, Tailwind CSS, React Router DOM, React Context API, Axios, React.lazy |
+| **Frontend** | React.js, TypeScript, Tailwind CSS, React Router DOM, React Context API, Axios, React.lazy, Canvas Confetti |
 | **Backend** | Node.js, Express.js (ES Modules), REST API, Mongoose |
 | **Database** | MongoDB Atlas / Local MongoDB (with resilient auto-fallback) |
 | **Authentication** | JWT Authentication, bcrypt password hashing, Nodemailer password reset |
@@ -41,12 +79,14 @@ real estate/
 ├── frontend/
 │   ├── public/              # Favicon, robots.txt, sitemap.xml
 │   ├── src/
-│   │   ├── components/      # Navbar, Footer, PropertyCard, ImageGallery, ViewingModal, ProtectedRoute
-│   │   ├── context/         # AuthContext (JWT, Login, Register, Profile, Reset Password)
+│   │   ├── components/      # Navbar, Footer, PropertyCard, ImageGallery, ViewingModal,
+│   │   │                    # VirtualTour360Modal, EMICalculatorModal, AIValuationModal,
+│   │   │                    # PropertyComparisonModal, PropertyComparisonBar, ProtectedRoute
+│   │   ├── context/         # AuthContext, CurrencyContext, FavoritesContext, ComparisonContext
 │   │   ├── pages/           # Lazy-loaded pages: Home, Listings, Details, Post, Dashboard, AI Hub, Auth
 │   │   ├── services/        # Axios client with JWT interceptor
-│   │   ├── types/           # TypeScript interfaces
-│   │   ├── utils/           # Indian Rupee (₹ Cr/Lakhs) formatters, Cities, Amenities
+│   │   ├── types/           # TypeScript interfaces (VirtualTour, LifestyleScores, Currency)
+│   │   ├── utils/           # Indian Rupee formatters, Currency converters, Stamp Duty rates
 │   │   ├── App.tsx          # React Router DOM with React.lazy & Suspense
 │   │   ├── main.tsx
 │   │   └── index.css
@@ -63,7 +103,7 @@ real estate/
 ## 🚀 Quick Start Guide
 
 ### 1. Prerequisites
-- **Node.js** v18+ (tested on Node.js v26)
+- **Node.js** v18+
 - **npm** v10+
 
 ### 2. Backend Setup
@@ -79,10 +119,10 @@ NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 
 # Database: MongoDB Atlas
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/sapphireiq
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/buyyourproperty
 
 # JWT Secret
-JWT_SECRET=sapphireiq_jwt_secret_dev_key_secure_983742
+JWT_SECRET=buyyourproperty_jwt_secret_dev_key_secure_983742
 JWT_EXPIRE=30d
 
 # ImageKit Credentials (Optional - auto falls back to local uploads if empty)
@@ -95,8 +135,8 @@ SMTP_HOST=smtp.mailtrap.io
 SMTP_PORT=2525
 SMTP_USER=
 SMTP_PASS=
-FROM_EMAIL=support@sapphireiq.in
-FROM_NAME="SapphireIQ Luxury Estates"
+FROM_EMAIL=support@buyyourproperty.in
+FROM_NAME="BuyYourProperty Luxury Estates"
 ```
 
 Seed initial luxury Indian properties and demo accounts:
@@ -137,46 +177,38 @@ Quickly sign in using one of the pre-configured Indian real estate accounts (wit
 
 | Role | Email | Password |
 | :--- | :--- | :--- |
-| **Real Estate Consultant** | `rohit.sharma@sapphireiq.in` | `Password@123` |
-| **HNI Home Buyer** | `ananya.deshmukh@sapphireiq.in` | `Password@123` |
+| **Real Estate Consultant** | `rohit.sharma@buyyourproperty.in` | `Password@123` |
+| **HNI Home Buyer** | `ananya.deshmukh@buyyourproperty.in` | `Password@123` |
 
 ---
 
 ## 🧪 Automated End-to-End Test Suite
 
-Run the full automated test suite verifying all 5 modules:
+Run the full automated test suite verifying all modules:
 ```bash
 cd backend
 node src/scripts/testEndpoints.js
 ```
 
 ### Test Coverage:
-- `GET /api/health` – API status & uptime
+- `GET /api/health` – API status & platform metadata
 - `GET /api/properties` – Filter by city (Mumbai, Bengaluru, Delhi NCR), category, price, BHK, area
-- `POST /api/auth/login` – Secure JWT issue
+- `POST /api/auth/login` – Secure JWT issuance
 - `GET /api/users/me` – Current user profile
 - `POST /api/auth/register` – Registration with phone & role
-- `POST /api/properties` – Creation with 4 images
-- `GET /api/properties/:id` – Single property & gallery
+- `POST /api/properties` – Creation with 4 images & RERA ID
+- `GET /api/properties/:id` – Single property, 360 tour scenes & lifestyle metrics
 - `POST /api/appointments/guest` – Guest viewing booking
 - `POST /api/appointments` – Logged-in viewing booking
 - `PUT /api/appointments/:id/cancel` – Appointment cancellation with reason
+- `POST /api/users/favorites/:id` – User property shortlist toggle
+- `GET /api/users/favorites` – Fetch shortlisted properties
 - `POST /api/ai-hub/search` – Firecrawl AI search with code-level rental exclusion and deduplication
 - `POST /api/auth/forgot-password` – Nodemailer password reset
 
 ---
 
-## 🇮🇳 Indian Real Estate Market Features
-
-1. **Dual Currency Representation**: Automatically formats prices in Crores (`₹ 24.5 Cr`) and Lakhs (`₹ 88 Lakhs`) with price per sq ft metrics.
-2. **Top Metropolitan Corridors**: Native filters for Mumbai, Bengaluru, Delhi NCR, Hyderabad, Pune, Goa, Chennai, Kolkata, and Ahmedabad.
-3. **BHK Configurations**: 1 BHK, 2 BHK, 3 BHK, 4 BHK, and 5+ BHK Grand Penthouses.
-4. **Carpet Area**: Accurately tracked in square feet (sq ft).
-5. **RERA & Verified Badges**: Highlights verified title and legal compliance for luxury acquisitions.
-
----
-
-## 🤖 Module 5: Optional AI Property Hub
+## 🤖 Optional AI Property Hub (Module 5)
 
 The AI Property Hub enables natural language discovery (e.g. *"Find a 4 BHK sea-facing apartment in Worli Mumbai under 20 Cr with infinity pool"*):
 - Discover listings using **Firecrawl**.
@@ -196,7 +228,7 @@ The AI Property Hub enables natural language discovery (e.g. *"Find a 4 BHK sea-
 3. Build Command: `npm run build`.
 4. Output Directory: `dist`.
 5. Environment Variables:
-   - `VITE_API_URL`: Your deployed Render backend URL (e.g., `https://sapphireiq-api.onrender.com`).
+   - `VITE_API_URL`: Your deployed Render backend URL (e.g., `https://buyyourproperty-api.onrender.com`).
    - `VITE_ENABLE_AI_HUB`: `true`.
 6. `frontend/vercel.json` ensures client-side routing works for all deep links.
 

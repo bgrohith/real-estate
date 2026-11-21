@@ -17,16 +17,22 @@ import {
   Mail,
   MapPin,
   Save,
+  Heart,
+  Video,
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useFavorites } from '../context/FavoritesContext';
+import { useCurrency } from '../context/CurrencyContext';
 import { Property, Appointment } from '../types';
 import { formatIndianPrice, formatDate } from '../utils/formatters';
 
 export const DashboardPage: React.FC = () => {
   const { user, updateProfile } = useAuth();
+  const { favorites, favoriteProperties, toggleFavorite } = useFavorites();
+  const { formatPrice, formatArea } = useCurrency();
 
-  const [activeTab, setActiveTab] = useState<'listings' | 'my-bookings' | 'received-inquiries' | 'profile'>('listings');
+  const [activeTab, setActiveTab] = useState<'listings' | 'my-bookings' | 'received-inquiries' | 'favorites' | 'profile'>('listings');
 
   // Listings state
   const [myProperties, setMyProperties] = useState<Property[]>([]);
@@ -218,6 +224,18 @@ export const DashboardPage: React.FC = () => {
           >
             <LayoutDashboard className="w-4 h-4" />
             <span>Received Viewing Requests ({receivedInquiries.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`py-3 px-2 text-xs font-semibold flex items-center gap-2 border-b-2 transition-all whitespace-nowrap ${
+              activeTab === 'favorites'
+                ? 'border-sapphire-700 text-sapphire-800'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${favorites.length > 0 ? 'text-rose-500 fill-rose-500' : ''}`} />
+            <span>Shortlisted Residences ({favorites.length})</span>
           </button>
 
           <button
@@ -492,6 +510,105 @@ export const DashboardPage: React.FC = () => {
               <p className="text-xs text-slate-500">
                 When buyers or guests book a tour for your listed properties, their contact details and preferred time slots will appear here.
               </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tab: Shortlisted Residences */}
+      {activeTab === 'favorites' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-serif font-bold text-lg text-slate-900 flex items-center gap-2">
+                <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
+                Shortlisted Residences ({favoriteProperties.length})
+              </h3>
+              <p className="text-xs text-slate-500">
+                Residences you've bookmarked for comparative evaluation and private viewings.
+              </p>
+            </div>
+            <Link
+              to="/properties"
+              className="text-xs font-semibold text-sapphire-700 hover:text-sapphire-900"
+            >
+              Browse More Homes →
+            </Link>
+          </div>
+
+          {favoriteProperties.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {favoriteProperties.map((prop) => (
+                <div
+                  key={prop._id}
+                  className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img
+                      src={prop.images?.[0]?.url || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'}
+                      alt={prop.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => toggleFavorite(prop)}
+                      className="absolute top-3 right-3 p-2 rounded-full bg-white/90 text-rose-500 shadow-sm hover:bg-white transition-all"
+                    >
+                      <Heart className="w-4 h-4 fill-rose-500" />
+                    </button>
+                    {prop.reraId && (
+                      <span className="absolute bottom-3 left-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-900/80 text-emerald-200 backdrop-blur-sm">
+                        RERA Verified
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-sapphire-700">
+                        {prop.propertyType} • {prop.location.city}
+                      </span>
+                      <Link
+                        to={`/properties/${prop._id}`}
+                        className="font-serif font-bold text-sm text-slate-900 hover:text-sapphire-700 block line-clamp-1 mt-0.5"
+                      >
+                        {prop.title}
+                      </Link>
+                      <p className="text-sm font-extrabold text-sapphire-900 mt-1">
+                        {formatPrice(prop.price)}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                      <Link
+                        to={`/properties/${prop._id}`}
+                        className="flex-1 py-2 text-center bg-sapphire-700 hover:bg-sapphire-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-all"
+                      >
+                        View Residence
+                      </Link>
+                      <button
+                        onClick={() => toggleFavorite(prop)}
+                        className="px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition-all"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 space-y-3">
+              <Heart className="w-10 h-10 text-slate-300 mx-auto" />
+              <h4 className="font-semibold text-slate-800 text-sm">No Shortlisted Homes</h4>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                Click the heart icon on any residence to shortlist it for easy comparison and viewing bookings.
+              </p>
+              <Link
+                to="/properties"
+                className="inline-block px-4 py-2 bg-sapphire-700 text-white rounded-xl text-xs font-semibold hover:bg-sapphire-800 shadow-sm"
+              >
+                Browse Residences
+              </Link>
             </div>
           )}
         </div>
